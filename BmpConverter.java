@@ -9,7 +9,7 @@ public class BmpConverter{
 private static JPanel panelAnsr;
 private static int width; 
 private static int height;
-
+protected static Set<Integer> rgbValues = new HashSet<>();
 public void converter() {
 
     
@@ -34,7 +34,7 @@ public void converter() {
 
     panelAnsr = new JPanel(new GridLayout(height, width));
    
-    //goes trought every pixel and record is coordinates and rgb values
+    //goes throught every pixel and record is coordinates and rgb values
   
     PixelArt(image);
 
@@ -55,13 +55,14 @@ public void PixelArt(BufferedImage image){
         int rgb = image.getRGB (x, y);
         Color colour = new Color(rgb);
         JButton pixel = new JButton();
-        pixel.setBackground(colour);
+        pixel.setBackground(colour);    
         panelAnsr.add(pixel);
+        rgbValues.add(rgb);
        
     
 }
 }
-
+System.out.println(rgbValues);
 
 }
 
@@ -79,6 +80,9 @@ public static int getWidth(){
 public static int getHeight(){
     return height;
 
+}
+public static Set<Integer> getRGB(){
+    return rgbValues;
 }
 
 }
