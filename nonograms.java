@@ -5,7 +5,7 @@ import java.awt.event.*;
 public class nonograms extends BmpConverter {
     private int width;
     private int height;
-
+    private Color selectedColor;
     private JFrame frame = new JFrame("Nonograms(Hanjies)");
     private JPanel mainPanel = new JPanel(new BorderLayout());
     private JPanel botomPanel = new JPanel(new BorderLayout());
@@ -15,8 +15,8 @@ public class nonograms extends BmpConverter {
         
        
         c.converter();
-        width = BmpConverter.getWidth();
-        height = BmpConverter.getHeight();
+        width = BmpConverter.getHeight();
+        height = BmpConverter.getWidth();
         rgbValues = BmpConverter.getRGB();
         JPanel centerGridPanel = new JPanel(new GridLayout(width, height));
         JPanel panelAnsr = BmpConverter.getPanel();
@@ -47,25 +47,32 @@ public class nonograms extends BmpConverter {
          int size = rgbArray.length;
          
          for (int x = 0; x < size; x++){
-             JButton button = new JButton("        ");
+             JButton button = new JButton("    ");
              Color colour = new Color(rgbArray[x]);
              button.setBackground(colour);
              rightPanel.add(button); 
-             
+             button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                if (e.getSource() == button){
+                    selectedColor = colour;
+                }
+                }
+             });
           
          }
-  
+         
 
         mainPanel.add(rightPanel, BorderLayout.EAST);
         botomPanel.add(new JButton("Colour - 3"));
         mainPanel.add(botomPanel, BorderLayout.SOUTH);
         System.out.println("Width: " + width);
         System.out.println("Height: " + height);
-        frame.setSize(height*30, width*30);
+        frame.setSize(height*40, width*35);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(mainPanel);
         frame.setVisible(true);
-
+        
         
            for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -76,11 +83,12 @@ public class nonograms extends BmpConverter {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == gamebutton){
-                gamebutton.setBackground(Color.BLACK);
+                gamebutton.setBackground(selectedColor);
                 
     }
 }    
                 });
+                Color colorgameButton = gamebutton.getBackground();
             }
             }
             }

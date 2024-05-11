@@ -23,7 +23,7 @@ public void converter() {
     }
     System.out.println("\nChoose a file to for a game\n");
 
-    //reads images width and height, taker user input and selects a
+    //reads images width and height, taker user input and selects a file
     try
     {Scanner input = new Scanner(System.in);
     int choice = input.nextInt();
@@ -34,7 +34,7 @@ public void converter() {
 
     panelAnsr = new JPanel(new GridLayout(height, width));
    
-    //goes throught every pixel and record is coordinates and rgb values
+   
   
     PixelArt(image);
 
@@ -46,7 +46,7 @@ public void converter() {
 
     
 }   
-
+ //goes throught every pixel and record is coordinates and rgb values
 public void PixelArt(BufferedImage image){
 
   
@@ -58,6 +58,7 @@ public void PixelArt(BufferedImage image){
         pixel.setBackground(colour);    
         panelAnsr.add(pixel);
         rgbValues.add(rgb);
+        Color colorPixel = pixel.getBackground();
        
     
 }
@@ -69,6 +70,9 @@ System.out.println(rgbValues);
 
 
 //getters
+
+
+
 public static  JPanel getPanel(){
     return panelAnsr;
 }
