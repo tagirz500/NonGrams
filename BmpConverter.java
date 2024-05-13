@@ -16,6 +16,7 @@ public void converter() {
     //importing bmp files via folder
     String folderPath = "C:/Users/tagir/Desktop/New folder/NonGrams/BMP Images";
     File BmpFiles = new File(folderPath);
+   // using listFiles method as a part of the File
     File[] files = BmpFiles.listFiles();
     System.out.println("Following files have been found:\n");
     for (int i = 0; i < files.length; i++){
@@ -58,7 +59,7 @@ public void PixelArt(BufferedImage image){
         pixel.setBackground(colour);    
         panelAnsr.add(pixel);
         rgbValues.add(rgb);
-        Color colorPixel = pixel.getBackground();
+        
        
     
 }
