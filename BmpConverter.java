@@ -92,3 +92,46 @@ public static Set<Integer> getRGB(){
 
 }
 
+
+class PictureArray {
+    private static final int[][] umbrellaArray = {
+    {0,0,0,1,0,0,0},
+    {0,0,1,1,1,0,0},
+    {0,1,1,1,1,1,0},
+    {1,1,1,1,1,1,1},
+    {0,0,0,1,0,0,0},
+    {0,1,0,1,0,0,0},
+    {0,0,1,1,0,0,0},
+
+    };
+
+    private static final int[][] smileArray = {
+      {0,1,0,1,0},
+      {0,0,1,0,0},
+      {1,0,0,0,1},
+      {0,1,1,1,0}
+    };
+
+    private static final int[][] crossArray = {
+     {1,0,0,0,1},
+     {0,1,0,1,0},
+     {0,0,1,0,0},
+     {0,1,0,1,0},
+     {1,0,0,0,1},
+     
+    };
+
+    //getters
+
+    public static int[][] getUmbrellaArray() {
+        return umbrellaArray;
+    }
+
+    public static int[][] getSmileArray() {
+        return smileArray;
+    }
+
+    public static int[][] getCrossArray() {
+        return crossArray;
+    }
+}
