@@ -67,7 +67,7 @@ public void PixelArt(BufferedImage bmpImage){
     
 }
 }
-System.out.println(rgbValues);
+
 
 }
 

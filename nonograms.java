@@ -30,11 +30,10 @@ public class nonograms extends BmpConverter {
        
         JPanel leftPanel = new JPanel();
         JPanel topPanel = new JPanel();
-        
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Choose the source of the picture: ");
+        System.out.println("Choose the source of the picture: \n");
         System.out.println("1. Main campaign");
-        System.out.println("2. BMP File");
+        System.out.println("2. BMP File\n");
         int choice = scanner.nextInt();
 
         if (choice == 1) {
@@ -189,8 +188,6 @@ public class nonograms extends BmpConverter {
         
 
         mainPanel.add(botomPanel, BorderLayout.SOUTH);
-        System.out.println("Width: " + width);
-        System.out.println("Height: " + height);
         frame.setSize(800, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(mainPanel);
