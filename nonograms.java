@@ -115,20 +115,17 @@ public class nonograms extends BmpConverter {
         botomPanel.add(checkButton);
         
         JButton answerButton = new JButton("Reveal Answer");
-        JButton importButton = new JButton("Import a Bmp File");
+        
         
         Border margin = BorderFactory.createEmptyBorder(5, 22, 5, 51);
         topPanel.setBorder(margin);
         topPanel.setLayout(new GridLayout(1, height - 1));
         topPanel.setPreferredSize(new Dimension(0, 20));
-        
-        // Create labels for column headers
-
         leftPanel.setLayout(new GridLayout(width, 1));
         leftPanel.setPreferredSize(new Dimension(20, 0));
         
-        // Create labels for x headers
-        setWidthAndHeight(height, width);
+       setWidthAndHeight(height,width);
+
         ActionListener action = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -136,25 +133,25 @@ public class nonograms extends BmpConverter {
                     System.out.println(compareButtonColors(panelAnsr, centerGridPanel) + " squares coloured correctly out of: " + (squares - whiteCellsCount + clickCount));
 
                 }
-                if(e.getSource() == importButton){
-                    frame.dispose();
-                    c.converter();
-                    width = BmpConverter.getHeight();
-                    height = BmpConverter.getWidth();
-                    centerGridPanel = new JPanel(new GridLayout(width, height));
-                    panelAnsr = BmpConverter.getPanel();
-                    creatingCenterPanel();
-
+                if (e.getSource() == checkButton && (squares - whiteCellsCount) == clickCount){
+                    JFrame endGameFrame = new JFrame();
+                    JPanel panel = new JPanel();
+                    JLabel label = new JLabel("You have completed the game");
                     
+                    panel.add(label);
+                    endGameFrame.add(panel);
+                    endGameFrame.setVisible(true);
+                    endGameFrame.setSize(400,50);
+                    endGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    System.out.println(compareButtonColors(panelAnsr, centerGridPanel) + " squares coloured correctly out of: " + (squares - whiteCellsCount + clickCount));
+
                 }
+              
             }
         };
 
-       
 
         botomPanel.add(answerButton);
-        botomPanel.add(importButton);
-        importButton.addActionListener(action);
         answerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -200,17 +197,7 @@ public class nonograms extends BmpConverter {
         frame.setVisible(true);
         printRowColumns(panelAnsr, leftPanel, topPanel);
 
-        if (squares - whiteCellsCount == clickCount){
-            JFrame frame = new JFrame();
-            JPanel panel = new JPanel();
-            JLabel label = new JLabel("You have completed the game");
-            
-            panel.add(label);
-            frame.add(panel);
-            frame.setVisible(true);
-            frame.setSize(400,200);
-            
-        }
+       
     }
 
     int compareButtonColors(JPanel panelAsr, JPanel centerGridPanel) {
