@@ -1,9 +1,11 @@
 import java.io.*;
 import java.util.*;
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class BmpConverter{
 private static JPanel panelAnsr;
@@ -29,15 +31,15 @@ public void converter() {
     {Scanner input = new Scanner(System.in);
     int choice = input.nextInt();
     File chosenFile = files[choice - 1];
-    BufferedImage image = ImageIO.read(chosenFile);
-    BmpConverter.width = image.getWidth();
-    BmpConverter.height = image.getHeight();
+    BufferedImage bmpImage = ImageIO.read(chosenFile);
+    BmpConverter.width = bmpImage.getWidth();
+    BmpConverter.height = bmpImage.getHeight();
 
     panelAnsr = new JPanel(new GridLayout(height, width));
    
    
   
-    PixelArt(image);
+    PixelArt(bmpImage);
 
     //fixes IOEXCEPTION erros
     } catch (IOException error) {
@@ -48,14 +50,15 @@ public void converter() {
     
 }   
  //goes throught every pixel and record is coordinates and rgb values
-public void PixelArt(BufferedImage image){
+public void PixelArt(BufferedImage bmpImage){
 
   
    for (int y = 0; y < height; y++){
         for (int x = 0; x < width; x++){
-        int rgb = image.getRGB (x, y);
+        int rgb = bmpImage.getRGB (x, y);
         Color colour = new Color(rgb);
         JButton pixel = new JButton();
+        pixel.setBorder(new LineBorder(Color.GRAY));           
         pixel.setBackground(colour);    
         panelAnsr.add(pixel);
         rgbValues.add(rgb);
@@ -105,10 +108,11 @@ class PictureArray {
 
     };
 
-    private static final int[][] smileArray = {
+    private static final int[][] sandClockArray = {
+      {0,1,1,1,0},
       {0,1,0,1,0},
       {0,0,1,0,0},
-      {1,0,0,0,1},
+      {0,1,0,1,0},
       {0,1,1,1,0}
     };
 
@@ -127,8 +131,8 @@ class PictureArray {
         return umbrellaArray;
     }
 
-    public static int[][] getSmileArray() {
-        return smileArray;
+    public static int[][] getClockArray() {
+        return sandClockArray;
     }
 
     public static int[][] getCrossArray() {

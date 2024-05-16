@@ -14,56 +14,61 @@ public class nonograms extends BmpConverter {
     private JPanel mainPanel = new JPanel(new BorderLayout());
     private JPanel botomPanel = new JPanel(new BorderLayout());
     private JPanel rightPanel = new JPanel();
+    private JPanel centerGridPanel;
+    private JPanel panelAnsr;
+    private JButton resetButton = new JButton("Reset");
     BmpConverter c = new BmpConverter();
+    private int whiteCellsCount = 0;        
+    private int clickCount = 0;
+    private int squares = width*height;
     
-    public nonograms() {
+    
 
 
+    public  nonograms() {
 
-        
-        
-        JPanel centerGridPanel;
-        JPanel panelAnsr;
+       
         JPanel leftPanel = new JPanel();
         JPanel topPanel = new JPanel();
-
+        
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choose the source of the picture: ");
-        System.out.println("1. Array");
+        System.out.println("1. Main campaign");
         System.out.println("2. BMP File");
-        int sourceChoice = scanner.nextInt();
+        int choice = scanner.nextInt();
 
-        if (sourceChoice == 1) {
+        if (choice == 1) {
             System.out.println("Choose the picture array: ");
-            System.out.println("1. Umbrella");
-            System.out.println("2. Smile Face");
-            System.out.println("3. Cross");
+            System.out.println("1. Sand Clock");
+            System.out.println("2. Cross");
+            System.out.println("3. Umbrella");
             int pictureChoice = scanner.nextInt();
 
             switch (pictureChoice) {
                 case 1:
-                    chosenArray = PictureArray.getUmbrellaArray();
+                    chosenArray = PictureArray.getClockArray();
                     break;
                 case 2:
-                    chosenArray = PictureArray.getSmileArray();
+                    chosenArray = PictureArray.getCrossArray();
                     break;
                 case 3:
-                    chosenArray = PictureArray.getCrossArray();
+                    chosenArray = PictureArray.getUmbrellaArray();
                     break;
                 default:
                     System.out.println("Invalid choice");
-                    return;
+                    
             }
             int[][] pictureGrid = chosenArray;
-             width = chosenArray[0].length;
+            width = chosenArray[0].length;
             height = chosenArray.length;
+            
             centerGridPanel = new JPanel(new GridLayout(width, height));
             panelAnsr = new JPanel(new GridLayout(width, height));
             for (int i = 0; i < pictureGrid.length; i++) {
                 for (int j = 0; j < pictureGrid[i].length; j++) {
                     JButton button = new JButton();
                     if (pictureGrid[i][j] == 1) {
-                        button.setBackground(Color.BLACK); // Change color for cells with picture
+                        button.setBackground(Color.BLACK); 
                     } else {
                         button.setBackground(Color.WHITE);
                     }
@@ -76,31 +81,32 @@ public class nonograms extends BmpConverter {
                     panelAnsr.add(button);
                 }
             }
+            
+           
 
            
 
-        } else if (sourceChoice == 2) {
+        } else if (choice == 2) {
             c.converter();
-            // Use BMP class to get width and height
+          
+            
             width = BmpConverter.getHeight();
             height = BmpConverter.getWidth();
             centerGridPanel = new JPanel(new GridLayout(width, height));
             panelAnsr = BmpConverter.getPanel();
-        } else {
-            return;
-        }
+            
+            
+        } 
 
-       ;// Change to umbrella, sun, or elephant
-
-        // Add buttons for each cell in the picture grid
+       
       
         mainPanel.add(centerGridPanel, BorderLayout.CENTER);
 
         rightPanel.setLayout(new GridLayout(9,1));
         botomPanel.setLayout(new GridLayout(1,3));
-        JButton resetButton = new JButton("Reset");
-        botomPanel.add(resetButton);
        
+        botomPanel.add(resetButton);
+        
 
         mainPanel.add(rightPanel, BorderLayout.EAST);
         mainPanel.add(leftPanel, BorderLayout.WEST);
@@ -121,20 +127,30 @@ public class nonograms extends BmpConverter {
         leftPanel.setLayout(new GridLayout(width, 1));
         leftPanel.setPreferredSize(new Dimension(20, 0));
         
-        // Create labels for row headers
-
+        // Create labels for x headers
+        setWidthAndHeight(height, width);
         ActionListener action = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 if (e.getSource() == checkButton){
-                    System.out.println(compareButtonColors(panelAnsr, centerGridPanel) + " squares coloured correctly");
+                    System.out.println(compareButtonColors(panelAnsr, centerGridPanel) + " squares coloured correctly out of: " + (squares - whiteCellsCount + clickCount));
 
                 }
                 if(e.getSource() == importButton){
+                    frame.dispose();
                     c.converter();
+                    width = BmpConverter.getHeight();
+                    height = BmpConverter.getWidth();
+                    centerGridPanel = new JPanel(new GridLayout(width, height));
+                    panelAnsr = BmpConverter.getPanel();
+                    creatingCenterPanel();
+
+                    
                 }
             }
         };
+
+       
 
         botomPanel.add(answerButton);
         botomPanel.add(importButton);
@@ -171,29 +187,9 @@ public class nonograms extends BmpConverter {
         rightPanel.setLayout(new GridLayout(6,1));
         checkButton.addActionListener(action);
 
+        creatingCenterPanel();
+       
         
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                JButton gamebutton = new JButton();
-                centerGridPanel.add(gamebutton);
-                gamebutton.setBackground(Color.YELLOW);
-                gamebutton.setBorder(new LineBorder(Color.GRAY));           
-                ActionListener action2 = new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        if (e.getSource() == gamebutton){
-                            gamebutton.setBackground(selectedColor);
-                        }
-                        if (e.getSource() == resetButton){
-                            gamebutton.setBackground(Color.YELLOW);
-                        }
-                    }
-                };
-                gamebutton.addActionListener(action2);
-                resetButton.addActionListener(action2);     
-            }   
-        }
 
         mainPanel.add(botomPanel, BorderLayout.SOUTH);
         System.out.println("Width: " + width);
@@ -203,6 +199,18 @@ public class nonograms extends BmpConverter {
         frame.add(mainPanel);
         frame.setVisible(true);
         printRowColumns(panelAnsr, leftPanel, topPanel);
+
+        if (squares - whiteCellsCount == clickCount){
+            JFrame frame = new JFrame();
+            JPanel panel = new JPanel();
+            JLabel label = new JLabel("You have completed the game");
+            
+            panel.add(label);
+            frame.add(panel);
+            frame.setVisible(true);
+            frame.setSize(400,200);
+            
+        }
     }
 
     int compareButtonColors(JPanel panelAsr, JPanel centerGridPanel) {
@@ -219,12 +227,17 @@ public class nonograms extends BmpConverter {
                 Colored++;
             } else if (!button1.getBackground().equals(button2.getBackground()) && !button2Background.equals(Color.YELLOW)){
                  button2.setBorder(new LineBorder(Color.magenta, 2));
-            }
+                }
+                else if (button2Background.equals(Color.YELLOW)){
+                    button2.setBorder(new LineBorder(Color.GRAY));
+                }
         }
         return Colored; 
     }
 
-    public void printRowColumns(JPanel panelAnsr, JPanel leftPanel, JPanel topPanel) {
+
+    
+    public int printRowColumns(JPanel panelAnsr, JPanel leftPanel, JPanel topPanel) {
         Component[] components = panelAnsr.getComponents();
         
         int[] rowCount = new int[width];
@@ -235,26 +248,78 @@ public class nonograms extends BmpConverter {
             Color currentColor = button.getBackground();
     
             if (!currentColor.equals(Color.WHITE)) {
-                int row = i / height; //only gives a full number to show row, row 0 is 1
-                int col = i % height; //gives a reaminder to show column
-                rowCount[row]++; 
-                colCount[col]++;
+                int x = i / height; //only gives a full number to show x, x 0 is 1
+                int y = i % height; //gives a reaminder to show column
+                rowCount[x]++; 
+                colCount[y]++;
+            }
+            else if (currentColor.equals(Color.WHITE)){
+                whiteCellsCount++;
             }
         }
     
-        for (int row = 0; row < width; row++) {
-            JLabel rowLabel = new JLabel(String.valueOf(rowCount[row]));
+        for (int x = 0; x < width; x++) {
+            JLabel rowLabel = new JLabel(String.valueOf(rowCount[x]));
             rowLabel.setHorizontalAlignment(SwingConstants.CENTER);
             leftPanel.add(rowLabel);
         }
     
-        for (int col = 0; col < height; col++) {
-            JLabel colLabel = new JLabel(String.valueOf(colCount[col]));
+        for (int y = 0; y < height; y++) {
+            JLabel colLabel = new JLabel(String.valueOf(colCount[y]));
             colLabel.setHorizontalAlignment(SwingConstants.CENTER);
             topPanel.add(colLabel);
         }
+        return whiteCellsCount;
     }
-   
+
+    //creates a center panel from array or a bmp file
+    public int creatingCenterPanel(){
+        
+        
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                JButton gamebutton = new JButton();
+                centerGridPanel.add(gamebutton);
+                gamebutton.setBackground(Color.YELLOW);
+                gamebutton.setBorder(new LineBorder(Color.GRAY));   
+                
+                ActionListener action2 = new ActionListener() {
+                    
+                    @Override
+                    public void actionPerformed(ActionEvent e){
+                        if (e.getSource() == gamebutton){
+                            clickCount++;
+                            Color currentColor = gamebutton.getBackground();
+                            if (currentColor.equals(selectedColor) || currentColor.equals(Color.BLACK)) {
+                             gamebutton.setBackground(Color.YELLOW);
+                            } else {
+                            if (selectedColor == null){
+                                gamebutton.setBackground(Color.BLACK);
+                            }
+                            else{
+                                gamebutton.setBackground(selectedColor);
+                            }
+                        }
+                        }
+                        if (e.getSource() == resetButton){
+                            gamebutton.setBackground(Color.YELLOW);
+                        }
+                    }
+                    
+                };
+                gamebutton.addActionListener(action2);
+                resetButton.addActionListener(action2);     
+               
+            }   
+        }
+        return clickCount;    
+        
+        }
+        public void setWidthAndHeight(int newWidth, int newHeight) {
+            width = newWidth;
+            height = newHeight;
+            squares = width * height; // Recalculate squares
+        }
 }
 
 
