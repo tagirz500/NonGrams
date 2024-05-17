@@ -95,7 +95,7 @@ public static Set<Integer> getRGB(){
 
 }
 
-
+//creating array of arrays
 class PictureArray {
     private static final int[][] umbrellaArray = {
     {0,0,0,1,0,0,0},
