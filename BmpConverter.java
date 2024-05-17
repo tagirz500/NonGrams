@@ -14,7 +14,6 @@ private static int height;
 protected static Set<Integer> rgbValues = new HashSet<>();
 public void converter() {
 
-    
     //importing bmp files via folder
     String folderPath = "C:/Users/tagir/Desktop/New folder/NonGrams/BMP Images";
     File BmpFiles = new File(folderPath);
@@ -38,22 +37,8 @@ public void converter() {
     panelAnsr = new JPanel(new GridLayout(height, width));
    
    
-  
-    PixelArt(bmpImage);
-
-    //fixes IOEXCEPTION erros
-    } catch (IOException error) {
-        System.err.println("Error: " + error.getMessage());
-    }
-
-
-    
-}   
- //goes throught every pixel and record is coordinates and rgb values
-public void PixelArt(BufferedImage bmpImage){
-
-  
-   for (int y = 0; y < height; y++){
+   //goes throught every pixel and record is coordinates and rgb values
+    for (int y = 0; y < height; y++){
         for (int x = 0; x < width; x++){
         int rgb = bmpImage.getRGB (x, y);
         Color colour = new Color(rgb);
@@ -62,16 +47,16 @@ public void PixelArt(BufferedImage bmpImage){
         pixel.setBackground(colour);    
         panelAnsr.add(pixel);
         rgbValues.add(rgb);
-        
-       
     
 }
 }
 
+    //fixes IOEXCEPTION erros
+    } catch (IOException error) {
+        System.err.println("Error: " + error.getMessage());
+    }
 
-}
-
-
+}   
 
 //getters
 
