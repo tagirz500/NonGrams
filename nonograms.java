@@ -25,11 +25,11 @@ public class nonograms extends BmpConverter {
     
 
 
-    public  nonograms() {
+    public  nonograms() {     
 
-       
         JPanel leftPanel = new JPanel();
         JPanel topPanel = new JPanel();
+        JButton answerButton = new JButton("Reveal Answer");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choose the source of the picture: \n");
         System.out.println("1. Main campaign");
@@ -60,7 +60,9 @@ public class nonograms extends BmpConverter {
             int[][] pictureGrid = chosenArray;
             width = chosenArray[0].length;
             height = chosenArray.length;
+
             
+            //cretes button and add them to playbele grid panel 
             centerGridPanel = new JPanel(new GridLayout(width, height));
             panelAnsr = new JPanel(new GridLayout(width, height));
             for (int i = 0; i < pictureGrid.length; i++) {
@@ -97,7 +99,7 @@ public class nonograms extends BmpConverter {
             
         } 
 
-       
+       JButton checkButton = new JButton("Check");
       
         mainPanel.add(centerGridPanel, BorderLayout.CENTER);
 
@@ -105,17 +107,13 @@ public class nonograms extends BmpConverter {
         botomPanel.setLayout(new GridLayout(1,3));
        
         botomPanel.add(resetButton);
-        
-
+        botomPanel.add(checkButton);
         mainPanel.add(rightPanel, BorderLayout.EAST);
         mainPanel.add(leftPanel, BorderLayout.WEST);
         mainPanel.add(topPanel, BorderLayout.NORTH);
-        JButton checkButton = new JButton("Check");
-        botomPanel.add(checkButton);
-        
-        JButton answerButton = new JButton("Reveal Answer");
         
         
+       
         Border margin = BorderFactory.createEmptyBorder(5, 22, 5, 51);
         topPanel.setBorder(margin);
         topPanel.setLayout(new GridLayout(1, height - 1));
@@ -125,6 +123,7 @@ public class nonograms extends BmpConverter {
         
        setWidthAndHeight(height,width);
 
+       //actions when button is pressed
         ActionListener action = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -140,10 +139,16 @@ public class nonograms extends BmpConverter {
                     panel.add(label);
                     endGameFrame.add(panel);
                     endGameFrame.setVisible(true);
-                    endGameFrame.setSize(400,50);
+                    endGameFrame.setSize(300,80);
                     endGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     System.out.println(compareButtonColors(panelAnsr, centerGridPanel) + " squares coloured correctly out of: " + (squares - whiteCellsCount + clickCount));
 
+                }
+                if (e.getSource() == answerButton){
+                    mainPanel.remove(centerGridPanel);
+                    mainPanel.add(panelAnsr,BorderLayout.CENTER);
+                    frame.revalidate();
+                    frame.repaint();
                 }
               
             }
@@ -151,21 +156,15 @@ public class nonograms extends BmpConverter {
 
 
         botomPanel.add(answerButton);
-        answerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == answerButton){
-                    mainPanel.remove(centerGridPanel);
-                    mainPanel.add(panelAnsr,BorderLayout.CENTER);
-                    frame.revalidate();
-                    frame.repaint();
-                }
-            }
-        });
+        answerButton.addActionListener(action);
          
+        //makes a set into an array
+
         Integer[] rgbArray = rgbValues.toArray(new Integer[rgbValues.size()]);
         int size = rgbArray.length;
-         
+
+
+        //Cretaes colours 
         for (int x = 0; x < size; x++){
             JButton button = new JButton("    ");
             Color colour = new Color(rgbArray[x]);
@@ -184,9 +183,7 @@ public class nonograms extends BmpConverter {
         checkButton.addActionListener(action);
 
         creatingCenterPanel();
-       
-        
-
+            
         mainPanel.add(botomPanel, BorderLayout.SOUTH);
         frame.setSize(800, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -197,6 +194,7 @@ public class nonograms extends BmpConverter {
        
     }
 
+    //compare colours of users grid panel and answer grid panel
     int compareButtonColors(JPanel panelAsr, JPanel centerGridPanel) {
         Component[] components1 = panelAsr.getComponents(); // array of GUI components - components[]
         Component[] components2 = centerGridPanel.getComponents();
@@ -220,7 +218,7 @@ public class nonograms extends BmpConverter {
     }
 
 
-    
+    //creates a label for row and columns fro left an top panel
     public int printRowColumns(JPanel panelAnsr, JPanel leftPanel, JPanel topPanel) {
         Component[] components = panelAnsr.getComponents();
         
